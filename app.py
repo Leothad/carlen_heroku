@@ -58,7 +58,7 @@ config = {
   'password':'nebxov-8kyrXy-wemzan',
   'database':'carlens',
   'client_flags': [mysql.connector.ClientFlag.SSL],
-  'ssl_ca': '/var/wwww/html/DigiCertGlobalRootG2.crt.pem'
+  'ssl_ca': './DigiCertGlobalRootG2.crt.pem'
 }
 
 try:
@@ -73,9 +73,3 @@ except mysql.connector.Error as err:
     print(err)
 else:
   cursor = conn.cursor()
-
-
-
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0",debug=True,port="4114")
