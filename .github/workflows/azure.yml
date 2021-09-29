@@ -1,6 +1,9 @@
 on:
-  [push]
-
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+  
 env:
   AZURE_WEBAPP_NAME: carlen
   AZURE_WEBAPP_PACKAGE_PATH: '.'
