@@ -16,7 +16,7 @@ app = Flask(__name__)
 model = load_model('models.h5')
 # model._make_predict_function()
 input_shape = 224
-cars=['Alphard', 'Altis', 'BT-50', 'Brio', 'C-HR', 'CRV', 'CX-8', 'Mazda2', 'Other', 'Vios']
+cars=['Accord', 'Alphard', 'Altis', 'BT-50', 'Brio', 'C-HR', 'CX-8', 'Mazda2', 'Other', 'Vios']
 
 def predict_label(img_path):
    np_image = Image.open(img_path)
@@ -58,7 +58,6 @@ def predict():
 
 		p = predict_label(img_path)
     
-
 	return jsonify(prediction = p[0], accuracy = p[1], img_path = img_path)
 
 @app.route("/static/<img_path>", methods = ['GET'])
