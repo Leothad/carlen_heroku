@@ -1,6 +1,6 @@
 #import Flask
 from PIL import Image
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 from flask import jsonify
 from keras.models import load_model
 from skimage import transform
@@ -38,27 +38,31 @@ def about_page():
 
 @app.route("/predict", methods = ['GET', 'POST'])
 def predict():
-	if request.method == 'POST':
-		img = request.files['my_image']
+  if request.method == 'POST':
+    img = request.files['my_image']
+    
+    img_path = "static/" + img.filename
+    img.save(img_path)
 
-		img_path = "static/" + img.filename	
-		img.save(img_path)
+    p = predict_label(img_path)
 
-		p = predict_label(img_path)
-
-	return render_template("home.html", prediction = p[0], accuracy = p[1], img_path = img_path)
+    return render_template("home.html", prediction = p[0], accuracy = p[1], img_path = img_path)
+  else:
+    return redirect("/", code=303)
 
 @app.route("/predicts", methods = ['GET', 'POST'])
-def predict():
-	if request.method == 'POST':
-		img = request.files['my_image']
+def predicts():
+  if request.method == 'POST':
+    img = request.files['my_image']
 
-		img_path = "static/" + img.filename	
-		img.save(img_path)
+    img_path = "static/" + img.filename
+    img.save(img_path)
 
-		p = predict_label(img_path)
-    
-	return jsonify(prediction = p[0], accuracy = p[1], img_path = img_path)
+    p = predict_label(img_path)
+
+    return jsonify({"prediction": p[0], "accuracy": p[1], "img_path": img_path})
+  else:
+    return redirect("/", code=303)
 
 @app.route("/static/<img_path>", methods = ['GET'])
 def imgae(img_path):
