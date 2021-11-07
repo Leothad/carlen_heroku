@@ -1,0 +1,229 @@
+{
+    "Accord": [{
+        "name": "Honda Accord",
+        "Brand": "Honda",
+        "Model": "Accord",
+        "Vehicle Type": "Sedan",
+        "Price": "1,499,999",
+        "Similarity": ["Toyota Camry", "Nissan Teana", "Mazda 3 Sedan"],
+        "grade": [{
+            "el": [{
+                "price":"1,499,999",
+                "ENGINE": [{
+                    "type": "DOHC 4 CYLINDER 16 VALVE VTEC TURBO",
+                    "FUEL DISTRIBUTION": "PGM-FI",
+                    "FUEL TYPE": "E85",
+                    "DISPLACEMENT": "1498",
+                    "BORE X STROKE": "73.0 x 89.5",
+                    "COMPRESSION RATIO": "10.3 : 1",
+                    "HORSEPOWER Kw (PS) / RPM": "140(190)/5,500",
+                    "TORQUE N-M (Kg-m.) / RPM": "243(24.8)/1,500-5,500",
+                    "DRIVE BY WIRE (DBW)": "Yes"
+                }],
+                "TRANSMISSION": [{
+                    "AUTOMATIC TRANSMISSION": "CVT (Continuously Variable Transmission)",
+                    "GEAR RATIO": "2.645 ~ 0.405",
+                    "REVERSE": "1.859 ~ 1.265",
+                    "FINAL REDUCTION RATIO (REAR AXLE)": "5.363"                    
+                }],
+                "ELECTRIC MOTOR": [{
+                    "HORSEPOWER Kw (PS)":	"No",
+                    "TORQUE N-M (Km.-m.)":	"No"
+                }],	
+                "BATTERY": [{
+                    "TYPE": "No",
+                    "BATTERY CAPACITY":	"No"	
+                }],
+                "TOTAL SYSTEM (ENGINE AND ELECTRIC MOTOR)": [{
+                    "TOTAL SYSTEM HORSEPOWER (PS)":	"No"
+                }],
+                "STEERING SYSTEM":[{
+                    "TYPE":	"DUAL PINION WITH ELECTRIC POWER STEERING (DP-EPS)",	
+                    "LOCK TO LOCK":	"2.3",
+                    "TURNING RADIUS":	"6.1"
+                }],
+                "BRAKE SYSTEM":[{
+                    "FRONT": "VENTILATED DISK",
+                    "REAR":	"DISK"	
+                }],
+                "SUSPENSION SYSTEM":[{
+                    "FONT":	"MCPHERSON STRUT WITH STABILIZER BAR",
+                    "REAR":	"INDEPENDENT MULTI-LINK WITH STABILIZER BAR"
+                }],
+                "DIMENSION":[{
+                    "LENGTH":	"4,894",
+                    "WIDTH":	"1,862",
+                    "HEIGHT":	"1,450",
+                    "WHEELBASE": "2,830",
+                    "TREAD FR. / RR.":	"1,600 / 1,610.2",
+                    "GROUND CLEARANCE":	"131.3",
+                    "WEIGHT":	"1,464",
+                    "WHEEL SIZE":	"17 X 7.5J",
+                    "TYRE SIZE":	"225/50 R17",
+                    "TANK CAPACITY": "56"
+                }]	
+                
+            }],
+            "e:HEV EL+":[{
+                "price":"1,639,999",
+                "ENGINE": [{
+                    "type": "DOHC 4 CYLINDER 16 VALVE i-VTEC",
+                    "FUEL DISTRIBUTION": "PGM-FI",
+                    "FUEL TYPE": "E20",
+                    "DISPLACEMENT": "1,993",
+                    "BORE X STROKE": "81.0 x 96.7",
+                    "COMPRESSION RATIO": "13.5 : 1",
+                    "HORSEPOWER Kw (PS) / RPM": "107(145)/6,200",
+                    "TORQUE N-M (Kg-m.) / RPM": "175(17.9)/3,500",
+                    "DRIVE BY WIRE (DBW)": "Yes"
+                }],
+                "TRANSMISSION": [{
+                    "AUTOMATIC TRANSMISSION": "E-CVT (Electrical Continuously Variable Transmission)",
+                    "GEAR RATIO": "2.454 (MOTOR) 0.805 (ENGINE)",
+                    "REVERSE": "2.454 (MOTOR) 0.805 (ENGINE)",
+                    "FINAL REDUCTION RATIO (REAR AXLE)": "8.397 (MOTOR) 2.757 (ENGINE)"                    
+                }],
+                "ELECTRIC MOTOR": [{
+                    "HORSEPOWER Kw (PS)":	"135 (184)",
+                    "TORQUE N-M (Km.-m.)":	"315 (32.1)"
+                }],	
+                "BATTERY": [{
+                    "TYPE": "Lithium-ion",
+                    "BATTERY CAPACITY":	"1.3kWh"	
+                }],
+                "TOTAL SYSTEM (ENGINE AND ELECTRIC MOTOR)": [{
+                    "TOTAL SYSTEM HORSEPOWER (PS)":	"215"
+                }],
+                "STEERING SYSTEM":[{
+                    "TYPE":	"DUAL PINION WITH ELECTRIC POWER STEERING (DP-EPS)",	
+                    "LOCK TO LOCK":	"2.3",
+                    "TURNING RADIUS":	"6.1"
+                }],
+                "BRAKE SYSTEM":[{
+                    "FRONT": "VENTILATED DISK",
+                    "REAR":	"DISK"	
+                }],
+                "SUSPENSION SYSTEM":[{
+                    "FONT":	"MCPHERSON STRUT WITH STABILIZER BAR",
+                    "REAR":	"INDEPENDENT MULTI-LINK WITH STABILIZER BAR"
+                }],
+                "DIMENSION":[{
+                    "LENGTH":	"4,894",
+                    "WIDTH":	"1,862",
+                    "HEIGHT":	"1,450",
+                    "WHEELBASE": "2,830",
+                    "TREAD FR. / RR.":	"1,588 / 1,603.2",
+                    "GROUND CLEARANCE":	"131.3",
+                    "WEIGHT":	"1,552",
+                    "WHEEL SIZE":	"17 X 7.5J",
+                    "TYRE SIZE":	"225/50 R17",
+                    "TANK CAPACITY": "56"
+                }]	
+            }],
+            "e:HEV TECH": [{
+                "price":"1,799,999",
+                "ENGINE": [{
+                    "type": "DOHC 4 CYLINDER 16 VALVE i-VTEC",
+                    "FUEL DISTRIBUTION": "PGM-FI",
+                    "FUEL TYPE": "E20",
+                    "DISPLACEMENT": "1,993",
+                    "BORE X STROKE": "81.0 x 96.7",
+                    "COMPRESSION RATIO": "13.5 : 1",
+                    "HORSEPOWER Kw (PS) / RPM": "107(145)/6,200",
+                    "TORQUE N-M (Kg-m.) / RPM": "175(17.9)/3,500",
+                    "DRIVE BY WIRE (DBW)": "Yes"
+                }],
+                "TRANSMISSION": [{
+                    "AUTOMATIC TRANSMISSION": "E-CVT (Electrical Continuously Variable Transmission)",
+                    "GEAR RATIO": "2.454 (MOTOR) 0.805 (ENGINE)",
+                    "REVERSE": "2.454 (MOTOR) 0.805 (ENGINE)",
+                    "FINAL REDUCTION RATIO (REAR AXLE)": "8.397 (MOTOR) 2.757 (ENGINE)"                    
+                }],
+                "ELECTRIC MOTOR": [{
+                    "HORSEPOWER Kw (PS)":	"135 (184)",
+                    "TORQUE N-M (Km.-m.)":	"315 (32.1)"
+                }],	
+                "BATTERY": [{
+                    "TYPE": "Lithium-ion",
+                    "BATTERY CAPACITY":	"1.3kWh"	
+                }],
+                "TOTAL SYSTEM (ENGINE AND ELECTRIC MOTOR)": [{
+                    "TOTAL SYSTEM HORSEPOWER (PS)":	"215"
+                }],
+                "STEERING SYSTEM":[{
+                    "TYPE":	"DUAL PINION WITH ELECTRIC POWER STEERING (DP-EPS)",	
+                    "LOCK TO LOCK":	"2.3",
+                    "TURNING RADIUS":	"6.1"
+                }],
+                "BRAKE SYSTEM":[{
+                    "FRONT": "VENTILATED DISK",
+                    "REAR":	"DISK"	
+                }],
+                "SUSPENSION SYSTEM":[{
+                    "FONT":	"MCPHERSON STRUT WITH STABILIZER BAR",
+                    "REAR":	"INDEPENDENT MULTI-LINK WITH STABILIZER BAR"
+                }],
+                "DIMENSION":[{
+                    "LENGTH":	"4,894",
+                    "WIDTH":	"1,862",
+                    "HEIGHT":	"1,450",
+                    "WHEELBASE": "2,830",
+                    "TREAD FR. / RR.":	"1,588 / 1,603.2",
+                    "GROUND CLEARANCE":	"131.3",
+                    "WEIGHT":	"1,568",
+                    "WHEEL SIZE":	"17 X 7.5J",
+                    "TYRE SIZE":	"225/50 R17",
+                    "TANK CAPACITY": "56"
+                }]	
+            }]
+        }]
+    }],
+    "Alpard": [{
+        "name": "Toyota Alpard",
+        "type": "DOHC 4 CYLINDER 16 VALVE VTEC TURBO",
+        "FUEL DISTRIBUTION": "PGM-FI",
+        "FUEL TYPE": "E85",
+        "DISPLACEMENT": "1498",
+        "BORE X STROKE": "73.0 x 89.5",
+        "COMPRESSION RATIO": "10.3 : 1",
+        "HORSEPOWER Kw (PS) / RPM": "140(190)/5,500",
+        "TORQUE N-M (Kg-m.) / RPM": "243(24.8)/1,500-5,500",
+        "DRIVE BY WIRE (DBW)": "Yes"
+    }],
+    "Altis": [{
+        "name": "Toyota Altis",
+        "type": "DOHC 4 CYLINDER 16 VALVE VTEC TURBO",
+        "FUEL DISTRIBUTION": "PGM-FI",
+        "FUEL TYPE": "E85",
+        "DISPLACEMENT": "1498",
+        "BORE X STROKE": "73.0 x 89.5",
+        "COMPRESSION RATIO": "10.3 : 1",
+        "HORSEPOWER Kw (PS) / RPM": "140(190)/5,500",
+        "TORQUE N-M (Kg-m.) / RPM": "243(24.8)/1,500-5,500",
+        "DRIVE BY WIRE (DBW)": "Yes"
+    }],
+    "BT-50": [{
+        "name": "Mazda BT-50",
+        "type": "DOHC 4 CYLINDER 16 VALVE VTEC TURBO",
+        "FUEL DISTRIBUTION": "PGM-FI",
+        "FUEL TYPE": "E85",
+        "DISPLACEMENT": "1498",
+        "BORE X STROKE": "73.0 x 89.5",
+        "COMPRESSION RATIO": "10.3 : 1",
+        "HORSEPOWER Kw (PS) / RPM": "140(190)/5,500",
+        "TORQUE N-M (Kg-m.) / RPM": "243(24.8)/1,500-5,500",
+        "DRIVE BY WIRE (DBW)": "Yes"
+    }],
+    "Yaris": [{
+        "name": "Mazda BT-50",
+        "type": "DOHC 4 CYLINDER 16 VALVE VTEC TURBO",
+        "FUEL DISTRIBUTION": "PGM-FI",
+        "FUEL TYPE": "E85",
+        "DISPLACEMENT": "1498",
+        "BORE X STROKE": "73.0 x 89.5",
+        "COMPRESSION RATIO": "10.3 : 1",
+        "HORSEPOWER Kw (PS) / RPM": "140(190)/5,500",
+        "TORQUE N-M (Kg-m.) / RPM": "243(24.8)/1,500-5,500",
+        "DRIVE BY WIRE (DBW)": "Yes"
+    }]
+}
