@@ -7,9 +7,9 @@ from flask import Flask, flash, render_template, request, redirect
 from flask_pymongo import PyMongo
 from pymongo.collection import Collection
 
-from .model import Car, Prediction
-from .predict import predict_label_from_image
-from .util import validate_file_extension
+from model import Car, Prediction
+from predict import predict_label_from_image
+from util import validate_file_extension
 
 __version__ = '0.0.1'
 

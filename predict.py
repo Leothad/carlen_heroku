@@ -5,7 +5,7 @@ from PIL import Image
 from skimage import transform
 import numpy as np
 
-from .constant import PREDICT_MODEL_PATH, PREDICT_MODEL_SIZE, PREDICT_MODEL_LIST
+from constant import PREDICT_MODEL_PATH, PREDICT_MODEL_SIZE, PREDICT_MODEL_LIST
 
 model = keras.models.load_model(
     os.path.join(os.path.dirname(__file__), PREDICT_MODEL_PATH)
