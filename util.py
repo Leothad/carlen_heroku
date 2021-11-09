@@ -1,4 +1,4 @@
-from .constant import ALLOWED_EXTENSIONS
+from constant import ALLOWED_EXTENSIONS
 
 
 def validate_file_extension(fn):
