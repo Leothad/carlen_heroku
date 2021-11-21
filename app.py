@@ -92,7 +92,7 @@ def car_list():
     return build_response(True, data=[{**Car(**c).dict(), '_link': f'/cars/{c.get("_id")}'} for c in cars])
 
 
-@app.route('/cars/<id>', methods=['GET'])
+@app.route('/cars/<ObjectId:id>', methods=['GET'])
 def car_detail(id):
-    c = car.find_one_or_404({'_id': ObjectId(id)})
+    c = car.find_one_or_404({'_id': id})
     return build_response(True, data=Car(**c))
