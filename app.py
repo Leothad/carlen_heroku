@@ -20,7 +20,7 @@ app = Flask(__name__, static_url_path='', static_folder=upload_folder)
 app.config['SECRET_KEY'] = secrets.token_hex()
 app.config['UPLOAD_FOLDER'] = upload_folder
 app.config["MONGO_URI"] = os.getenv("MONGO_URI")
-pymongo = PyMongo(app)
+pymongo = PyMongo(app, ssl=True, ssl_cert_reqs='CERT_NONE')
 
 # Get a reference to the collection.
 car: Collection = pymongo.db.car
