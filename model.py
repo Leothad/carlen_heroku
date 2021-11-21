@@ -1,49 +1,39 @@
-from fastapi.encoders import jsonable_encoder
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
+from bson.objectid import ObjectId as BsonObjectId
+
+
+class ObjectId(str):
+    @classmethod
+    def __get_validators__(cls):
+        yield cls.validate
+
+    @classmethod
+    def validate(cls, v):
+        if not isinstance(v, BsonObjectId):
+            raise ValueError("Not a valid ObjectId")
+        return str(v)
 
 
 class Car(BaseModel):
-    name: str
-    brand: str
-    price: str
-    color_name: dict
-    color_code: dict
-    fuel_type: str
-    vehicle_type: str
-    engine_displacement: str
-    power: str
-    torque: str
-    seating_capacity: str
-    door: str
-    length: str
-    width: str
-    height: str
-    ground_clearance: str
-    wheel_base: str
-    curb_weight: str
-    fuel_tank_capacity: str
-    cylinders: str
-    valves_per_cylinder: str
-    compression_ratio: str
-    valve_configuration: str
-    engine: str
-    front_suspension: str
-    rear_suspension: str
-    transmission_type: str
-    transmission: str
-    tyre_size: str
-    wheel_size: str
-    alloy_wheel_size: str
-    tyre_type: str
-    steering_gear_type: str
-    adjustable_steering_wheel: str
-    steering_wheel_adjustment_type: str
+    id: ObjectId = Field(None, alias='_id')
+    car: str = None
+    brand: str = None
+    model: str = None
+    link: str = None
+    overview: list = None
+    technical_specification: list = None
+    safety: list = None
+    security: list = None
 
-    def to_json(self):
-        return jsonable_encoder(self, exclude_none=True)
+    def to_bson(self):
+        data = self.dict(by_alias=True, exclude_none=True)
+        if data.get("_id") is None:
+            data.pop("_id", None)
+        return data
 
 
 class Prediction(BaseModel):
+    id: ObjectId = Field(None, alias='_id')
     prediction: str
     accuracy: float
 
@@ -52,6 +42,3 @@ class Prediction(BaseModel):
         if data.get("_id") is None:
             data.pop("_id", None)
         return data
-
-    def to_json(self):
-        return jsonable_encoder(self, exclude_none=True)
