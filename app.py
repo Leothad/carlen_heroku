@@ -1,9 +1,8 @@
 import os
 import uuid
 import secrets
-import tempfile
 
-from flask import Flask, request, abort
+from flask import Flask, request, abort, url_for
 from flask_pymongo import PyMongo
 from pymongo.collection import Collection
 from bson.objectid import ObjectId
@@ -16,12 +15,10 @@ from util import validate_file_extension, build_response
 
 __version__ = '0.0.1'
 
-upload_folder = tempfile.mkdtemp()
 
 # Configure Flask & Flask-PyMongo:
-app = Flask(__name__, static_url_path='', static_folder=upload_folder)
+app = Flask(__name__)
 app.config['SECRET_KEY'] = secrets.token_hex()
-app.config['UPLOAD_FOLDER'] = upload_folder
 app.config['MONGO_URI'] = os.getenv('MONGO_URI')
 pymongo = PyMongo(app, ssl=True, ssl_cert_reqs='CERT_NONE')
 
@@ -52,21 +49,25 @@ def predict():
 
     # check if the file is one of the allowed types/extensions
     if predict_image and validate_file_extension(predict_image.filename):
-        fn = str(uuid.uuid4()) + '.' + \
-            predict_image.filename.rsplit('.', 1)[1].lower()
-        fp = os.path.join(app.config['UPLOAD_FOLDER'], fn)
+        # predict the label
         try:
-            predict_image.save(fp)
-        except Exception:
-            abort(500, description='Failed to save image')
-
-        try:
-            predict_label = predict_label_from_image(fp)
+            predict_label = predict_label_from_image(predict_image)
         except Exception:
             abort(500, description='Failed to predict label')
 
+        # save the prediction image to the database
+        fn = str(uuid.uuid4()) + '.' + \
+            predict_image.filename.rsplit('.', 1)[1].lower()
+        try:
+            pymongo.save_file(fn, predict_image, base='prediction')
+        except Exception:
+            abort(500, description='Failed to save image')
+
+        # save the prediction label to the database
         p = Prediction(
-            prediction=predict_label[0], accuracy=float(predict_label[1])
+            prediction=predict_label[0],
+            accuracy=float(predict_label[1]),
+            fn=fn
         )
         try:
             result = prediction.insert_one(p.to_bson())
@@ -74,12 +75,18 @@ def predict():
                 f'Prediction inserted: id={result.inserted_id} prediction={predict_label[0]} accuracy={float(predict_label[1])}')
         except Exception:
             abort(500, description='Failed to save prediction')
-        return build_response(True, data=p)
+
+        return build_response(True, data={'id': str(result.inserted_id)})
     else:
         abort(400, description='Invalid file type')
 
 
-@app.route('/cars', methods=['GET'])
+@ app.route("/predict/<fn>")
+def predict_image(fn):
+    return pymongo.send_file(fn, base='prediction')
+
+
+@ app.route('/cars', methods=['GET'])
 def car_list():
     q = request.args.get('q')
     try:
@@ -89,7 +96,7 @@ def car_list():
         )
     except Exception:
         abort(500, description='Failed to retrieve cars')
-    return build_response(True, data=[{**Car(**c).dict(), '_link': f'/cars/{c.get("_id")}'} for c in cars])
+    return build_response(True, data=[{**Car(**c).dict(), '_link': url_for('car_detail', id=c.get("_id"))} for c in cars])
 
 
 @app.route('/cars/<ObjectId:id>', methods=['GET'])

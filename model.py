@@ -34,8 +34,9 @@ class Car(BaseModel):
 
 class Prediction(BaseModel):
     id: ObjectId = Field(None, alias='_id')
-    prediction: str
-    accuracy: float
+    prediction: str = None
+    accuracy: float = None
+    fn: str = None
 
     def to_bson(self):
         data = self.dict(by_alias=True, exclude_none=True)
