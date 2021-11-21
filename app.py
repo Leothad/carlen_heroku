@@ -3,12 +3,14 @@ import uuid
 import secrets
 import tempfile
 
-from flask import Flask, flash, render_template, request, redirect
+from flask import Flask, request, abort
 from flask_pymongo import PyMongo
 from pymongo.collection import Collection
+from werkzeug.exceptions import HTTPException
 
 from model import Car, Prediction
 from predict import predict_label_from_image
+from error import Error
 from util import validate_file_extension
 
 __version__ = '0.0.1'
@@ -27,44 +29,50 @@ car: Collection = pymongo.db.car
 prediction: Collection = pymongo.db.prediction
 
 
-@app.route('/', methods=['GET'])
-def index():
-    return render_template('index.jinja')
+@app.errorhandler(Exception)
+def handle_error(e):
+    code = 500
+    if isinstance(e, HTTPException):
+        code = e.code
+    return Error(e.description, code).to_json(), code
 
 
-@app.route('/', methods=['POST'])
+@app.route('/predict', methods=['POST'])
 def predict():
     # check if the post request has the file part
     if 'predict_image' not in request.files:
-        flash('Prediction image required')
-        return redirect(request.url)
+        abort(400, description='Prediction image required')
 
     predict_image = request.files['predict_image']
 
     # if user does not select file, browser also submit a empty part without filename
     if predict_image.filename == '':
-        flash('Prediction image required')
-        return redirect(request.url)
+        abort(400, description='Prediction image required')
 
     # check if the file is one of the allowed types/extensions
     if predict_image and validate_file_extension(predict_image.filename):
+        fn = str(uuid.uuid4()) + '.' + \
+            predict_image.filename.rsplit('.', 1)[1].lower()
+        fp = os.path.join(app.config['UPLOAD_FOLDER'], fn)
         try:
-            fn = str(uuid.uuid4()) + '.' + \
-                predict_image.filename.rsplit('.', 1)[1].lower()
-            fp = os.path.join(app.config['UPLOAD_FOLDER'], fn)
             predict_image.save(fp)
+        except Exception:
+            abort(500, description='Failed to save image')
 
+        try:
             predict_label = predict_label_from_image(fp)
-            p = Prediction(
-                prediction=predict_label[0], accuracy=float(predict_label[1]))
+        except Exception:
+            abort(500, description='Failed to predict label')
+
+        p = Prediction(
+            prediction=predict_label[0], accuracy=float(predict_label[1]))
+        try:
             prediction.insert_one(p.to_bson())
-            return render_template('index.jinja', prediction=p.prediction, accuracy=p.accuracy, fn=fn)
-        except Exception as e:
-            flash("Prediction failed")
-            return redirect(request.url)
+        except Exception:
+            abort(500, description='Failed to save prediction')
+        return p.to_json()
     else:
-        flash('Invalid file type')
-        return redirect(request.url)
+        abort(400, description='Invalid file type')
 
 
 @app.route('/detail/<name>', methods=['GET'])

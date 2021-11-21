@@ -52,3 +52,6 @@ class Prediction(BaseModel):
         if data.get("_id") is None:
             data.pop("_id", None)
         return data
+
+    def to_json(self):
+        return jsonable_encoder(self, exclude_none=True)
