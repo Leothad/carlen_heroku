@@ -1,6 +1,7 @@
 import os
 import uuid
 import secrets
+import tempfile
 
 from flask import Flask, request, abort, url_for
 from flask_pymongo import PyMongo
@@ -20,6 +21,7 @@ __version__ = '0.0.1'
 app = Flask(__name__)
 app.config['SECRET_KEY'] = secrets.token_hex()
 app.config['MONGO_URI'] = os.getenv('MONGO_URI')
+app.config['TEMP_DIR'] = tempfile.mkdtemp()
 pymongo = PyMongo(app, ssl=True, ssl_cert_reqs='CERT_NONE')
 
 # Get a reference to the collection.
@@ -33,6 +35,15 @@ def handle_error(e):
     if isinstance(e, HTTPException):
         code = e.code
     return Error(e.description, code).to_json(), code
+
+
+@app.route('/predict', methods=['GET'])
+def predict_list():
+    try:
+        predicts = prediction.find()
+    except Exception:
+        abort(500, description='Failed to retrieve cars')
+    return build_response(True, data=[{**Prediction(**p).dict(), 'fn': url_for('predict_image', fn=p.get('fn')), '_link': url_for('predict_detail', id=p.get('_id'))} for p in predicts])
 
 
 @app.route('/predict', methods=['POST'])
@@ -49,20 +60,26 @@ def predict():
 
     # check if the file is one of the allowed types/extensions
     if predict_image and validate_file_extension(predict_image.filename):
-        # predict the label
-        try:
-            predict_label = predict_label_from_image(predict_image)
-        except Exception:
-            abort(500, description='Failed to predict label')
-
-        # save the prediction image to the database
         fn = str(uuid.uuid4()) + '.' + \
             predict_image.filename.rsplit('.', 1)[1].lower()
+        fp = os.path.join(app.config.get('TEMP_DIR'), fn)
+        predict_image.save(fp)
+        # predict the label
         try:
-            pymongo.save_file(fn, predict_image, base='prediction')
-        except Exception:
-            abort(500, description='Failed to save image')
+            try:
+                predict_label = predict_label_from_image(fp)
+            except Exception:
+                abort(500, description='Failed to predict label')
 
+            # save the prediction image to the database
+            try:
+                with open(fp, 'rb') as f:
+                    pymongo.save_file(fn, f, base='prediction')
+            except Exception:
+                abort(500, description='Failed to save image')
+        finally:
+            os.remove(fp)
+        
         # save the prediction label to the database
         p = Prediction(
             prediction=predict_label[0],
@@ -72,16 +89,22 @@ def predict():
         try:
             result = prediction.insert_one(p.to_bson())
             app.logger.info(
-                f'Prediction inserted: id={result.inserted_id} prediction={predict_label[0]} accuracy={float(predict_label[1])}')
+                f'Prediction inserted: id={result.inserted_id} prediction={p.prediction} accuracy={float(p.accuracy)}')
         except Exception:
             abort(500, description='Failed to save prediction')
 
-        return build_response(True, data={'id': str(result.inserted_id)})
+        return build_response(True, data={'id': str(result.inserted_id), '_link': url_for('predict_detail', id=ObjectId(str(result.inserted_id)))})
     else:
         abort(400, description='Invalid file type')
 
 
-@ app.route("/predict/<fn>")
+@app.route('/predict/<ObjectId:id>', methods=['GET'])
+def predict_detail(id):
+    p = prediction.find_one_or_404({'_id': id})
+    return build_response(True, data={**Prediction(**p).dict(), 'fn': url_for('predict_image', fn=p.get('fn'))})
+
+
+@app.route('/predict/images/<path:fn>')
 def predict_image(fn):
     return pymongo.send_file(fn, base='prediction')
 
@@ -96,7 +119,7 @@ def car_list():
         )
     except Exception:
         abort(500, description='Failed to retrieve cars')
-    return build_response(True, data=[{**Car(**c).dict(), '_link': url_for('car_detail', id=c.get("_id"))} for c in cars])
+    return build_response(True, data=[{**Car(**c).dict(), '_link': url_for('car_detail', id=c.get('_id'))} for c in cars])
 
 
 @app.route('/cars/<ObjectId:id>', methods=['GET'])
