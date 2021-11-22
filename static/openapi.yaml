@@ -192,7 +192,7 @@ paths:
                   - type: object
                     properties:
                       data:
-                        $ref: "#/components/schemas/Car"
+                        $ref: "#/components/schemas/CarDetail"
         "404":
           description: Not found
           content:
@@ -275,3 +275,171 @@ components:
         model:
           type: string
           example: "turboEL"
+
+    CarDetail:
+      allOf:
+        - $ref: "#/components/schemas/Car"
+        - type: object
+          properties:
+            link:
+              type: string
+              example: https://www.honda.co.th/accord
+            overview:
+              type: array
+              example:
+                [
+                  {
+                    "brand": "Honda Thailand",
+                    "color_code":
+                      {
+                        "c1": "BFBEC4",
+                        "c2": "0E0F0F",
+                        "c3": "5B6169",
+                        "c4": "E2E2E4",
+                      },
+                    "color_name":
+                      {
+                        "c1": "Modern Steel Metallic",
+                        "c2": "Black Crystal",
+                        "c3": "Lunar Silver Metallic",
+                        "c4": "Platinum White Pearl",
+                      },
+                    "model": "Turbo EL",
+                    "name": "HONDA ACCORD",
+                    "price": "1480000 THB",
+                    "vehicle_type": "Sedans",
+                  },
+                ]
+            safety:
+              type: array
+              example:
+                [
+                  {
+                    "Anti-Lock Braking System": "Yes",
+                    "Automatic Brake Hold": "Yes",
+                    "Blind Spot Monitoring": "Yes",
+                    "Brake Assist": "Yes",
+                    "Child Safety Locks": "Yes",
+                    "Day & Night Rear View Mirror": "No",
+                    "Door Open Warning": "Yes",
+                    "Driver Airbag": "Yes",
+                    "Driver Attention Monitor": "Yes",
+                    "Electric Parking Brake": "Yes",
+                    "Electronic Brakeforce Distribution": "Yes",
+                    "Emergency Stop Signal": "Yes",
+                    "Engine Check Warning": "Yes",
+                    "Front Seat Belts Height Adjust": "Yes",
+                    "Front Side Airbag": "Yes",
+                    "Hill Start Assist": "Yes",
+                    "Multi-View Camera System": "Yes",
+                    "Parking Assist System": "No",
+                    "Parking Sensors": "No",
+                    "Passenger Airbag": "Yes",
+                    "Rear Camera": "Yes",
+                    "Rear Cross Traffic Alert": "No",
+                    "Rear Seat Belts": "Yes",
+                    "Rear Side Airbag": "No",
+                    "Safety Sensing": "No",
+                    "Seat Belt Warning": "Yes",
+                    "Side Curtain Airbag": "Yes",
+                    "Traction Control": "Yes",
+                    "Tyre Pressure Monitor": "No",
+                    "Vehicle Stability Assist": "Yes",
+                  },
+                ]
+            security:
+              type: array
+              example:
+                [
+                  {
+                    "Anti Theft Device": "Yes",
+                    "Anti-Theft Alarm": "Yes",
+                    "Central Locking": "Yes",
+                    "Immobilizer": "Yes",
+                    "Power Door Locks": "Yes",
+                    "Smart Card Entry": "No",
+                  },
+                ]
+            technical_specification:
+              type: array
+              example:
+                [
+                  {
+                    "capacity":
+                      [
+                        {
+                          "cargo_capacity": "573 L",
+                          "curb_weight": "1464 kg",
+                          "front_tread": "1600 mm",
+                          "fuel_tank_capacity": "56 L",
+                          "ground_clearance": "131 mm",
+                          "height": "1450 mm",
+                          "length": "4894 mm",
+                          "number_of_door": 4,
+                          "rear_tread": "1610 mm",
+                          "seating_capacity": 5,
+                          "wheel_base": "2830 mm",
+                          "width": "1862 mm",
+                        },
+                      ],
+                    "engine_details":
+                      [
+                        {
+                          "battery_type": "No",
+                          "compression_ratio": "10.3:1",
+                          "engine":
+                            "1.5L Turbo Petrol Engine, 4 Cylinder 16 Valve DOHC",
+                          "fuel_distribution": "PGM-FI",
+                          "number_of_cylinder": 4,
+                          "valve_configuration": "DOHC",
+                          "valves_per_cylinder": 4,
+                        },
+                      ],
+                    "performace":
+                      [
+                        {
+                          "engine_displacement": "1498 cc",
+                          "fuel_type": "Petrol",
+                          "mileage_city": 12.5,
+                          "mileage_highway": 20,
+                          "power": "190 PS",
+                          "torque": "243 Nm",
+                        },
+                      ],
+                    "steering":
+                      [
+                        {
+                          "adjustable_steering_wheel": "Yes",
+                          "steering_gear_type": "Dual Pinion",
+                          "steering_type": "Electric Power",
+                          "steering_wheel_adjustment_type": "Tilt & Telescopic",
+                          "turning_radius": "6.1 m",
+                        },
+                      ],
+                    "suspension&brakes":
+                      [
+                        {
+                          "front_suspension": "MacPherson Strut",
+                          "rear_suspension": "Multi-Link",
+                          "shock_absorbers_type": "Coil Spring",
+                        },
+                      ],
+                    "transmission":
+                      [
+                        {
+                          "drive_type": "4WD",
+                          "transmission": "Variable Speed",
+                          "transmission_type": "CVT",
+                        },
+                      ],
+                    "wheel&tyre":
+                      [
+                        {
+                          "alloy_wheel_size": "17 Inch",
+                          "tyre_size": "225/50 R17",
+                          "tyre_type": "Radial",
+                          "wheel_size": "R17",
+                        },
+                      ],
+                  },
+                ]
