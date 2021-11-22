@@ -15,9 +15,6 @@ from predict import predict_label_from_image
 from error import Error
 from util import validate_file_extension, build_response
 
-__version__ = '0.0.1'
-
-
 # Configure Flask & Flask-PyMongo:
 app = Flask(__name__)
 app.config['SECRET_KEY'] = secrets.token_hex()
