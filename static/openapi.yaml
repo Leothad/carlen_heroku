@@ -1,0 +1,277 @@
+openapi: "3.0.2"
+info:
+  title: Carlens APIs
+  version: "1.0"
+servers:
+  - url: http://carlen.azurewebsites.net
+paths:
+  /predict:
+    get:
+      summary: "Get all prediction results"
+      tags:
+        - predict
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/Response"
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          allOf:
+                            - $ref: "#/components/schemas/Prediction"
+                            - type: object
+                              properties:
+                                _link:
+                                  type: string
+                                  example: "/predict/619af4f7dee6db19206b875f"
+
+    post:
+      summary: "Create a new prediction from the image"
+      tags:
+        - predict
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                predict_image:
+                  description: >
+                    Prediction image is the car image that you want to use to
+                    predict. (Allow only `.png`, `.jpg`, and `.jpeg`)
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/Response"
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                            example: "619af4f7dee6db19206b875f"
+                          _link:
+                            type: string
+                            example: "/predict/619af4f7dee6db19206b875f"
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /predict/{id}:
+    get:
+      summary: "Get a prediction result by Id"
+      tags:
+        - predict
+      parameters:
+        - name: id
+          description: "Id of the prediction"
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/Response"
+                  - type: object
+                    properties:
+                      data:
+                        $ref: "#/components/schemas/Prediction"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                code: 404
+                message: "Not found"
+
+  /predict/images/{filename}:
+    get:
+      summary: "Get a prediction image by filename"
+      tags:
+        - predict
+      parameters:
+        - name: filename
+          description: "Filename of the prediction"
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful response
+          content:
+            image/jpeg:
+              schema:
+                type: string
+                format: binary
+            image/png:
+              schema:
+                type: string
+                format: binary
+
+  /cars:
+    get:
+      summary: "Get all car details"
+      tags:
+        - cars
+      parameters:
+        - name: q
+          description: >
+            `q` is stand for query string you can filter what ever you want
+            including `brand`, `car`, and `model` (`q` is always in json format)
+          in: query
+          required: false
+          schema:
+            type: string
+          example: '{"brand":"honda"}'
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/Response"
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          allOf:
+                            - $ref: "#/components/schemas/Car"
+                            - type: object
+                              properties:
+                                _link:
+                                  type: string
+                                  example: "/cars/61922b912aefc2e792f033de"
+
+  /cars/{id}:
+    get:
+      summary: "Get a car detail by Id"
+      tags:
+        - cars
+      parameters:
+        - name: id
+          description: "Id of the car"
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/Response"
+                  - type: object
+                    properties:
+                      data:
+                        $ref: "#/components/schemas/Car"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                code: 404
+                message: "Not found"
+
+components:
+  schemas:
+    Response:
+      type: object
+      required:
+        - status
+
+      properties:
+        status:
+          type: boolean
+        data:
+          type: object
+          additionalProperties:
+            oneOf:
+              - type: array
+      discriminator:
+        propertyName: data
+
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          example: 400
+        message:
+          type: string
+          enum: [Prediction image required, Invalid file type]
+
+    Prediction:
+      type: object
+      required:
+        - id
+        - prediction
+        - accuracy
+        - fn
+      properties:
+        id:
+          type: string
+          example: "619af4f7dee6db19206b875f"
+        prediction:
+          type: string
+          example: "Accord"
+        accuracy:
+          type: number
+          example: 0.955053985118866
+        fn:
+          type: string
+          example: "/predict/images/ae355d3c-9357-403b-9ed9-07f81770560d.jpg"
+
+    Car:
+      type: object
+      required:
+        - id
+        - brand
+        - car
+        - model
+      properties:
+        id:
+          type: string
+          example: "61922b912aefc2e792f033de"
+        brand:
+          type: string
+          example: "honda"
+        car:
+          type: string
+          example: "accord"
+        model:
+          type: string
+          example: "turboEL"

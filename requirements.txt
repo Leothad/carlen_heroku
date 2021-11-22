@@ -10,6 +10,7 @@ dnspython==2.1.0
 fastapi==0.70.0
 Flask==2.0.2
 Flask-PyMongo==2.3.0
+flask-swagger-ui==3.36.0
 flatbuffers==2.0
 gast==0.4.0
 google-auth==2.3.3

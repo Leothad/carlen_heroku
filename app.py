@@ -5,6 +5,7 @@ import tempfile
 
 from flask import Flask, request, abort, url_for
 from flask_pymongo import PyMongo
+from flask_swagger_ui import get_swaggerui_blueprint
 from pymongo.collection import Collection
 from bson.objectid import ObjectId
 from werkzeug.exceptions import HTTPException
@@ -27,6 +28,16 @@ pymongo = PyMongo(app, ssl=True, ssl_cert_reqs='CERT_NONE')
 # Get a reference to the collection.
 car: Collection = pymongo.db.car
 prediction: Collection = pymongo.db.prediction
+
+# Swagger
+SWAGGER_URL = '/docs'
+API_URL = '/static/openapi.yaml'
+swaggerui_blueprint = get_swaggerui_blueprint(
+    SWAGGER_URL,
+    API_URL,
+)
+
+app.register_blueprint(swaggerui_blueprint)
 
 
 @app.errorhandler(Exception)
@@ -79,7 +90,7 @@ def predict():
                 abort(500, description='Failed to save image')
         finally:
             os.remove(fp)
-        
+
         # save the prediction label to the database
         p = Prediction(
             prediction=predict_label[0],
