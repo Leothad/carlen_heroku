@@ -115,7 +115,7 @@ def predict():
                 **p.dict(),
                 'id': str(result.inserted_id),
                 'fn': url_for('predict_image', fn=p.fn),
-                'cars': [
+                'prediction_cars': [
                     {
                         **Car(**c).dict(),
                         '_link': url_for('car_detail', id=c.get('_id'))
