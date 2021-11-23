@@ -258,6 +258,9 @@ components:
         prediction:
           type: string
           example: "Accord"
+        confidence:
+          type: number
+          example: 95.5053985119
         accuracy:
           type: number
           example: 0.955053985118866

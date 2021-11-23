@@ -91,6 +91,7 @@ def predict():
         # save the prediction label to the database
         p = Prediction(
             prediction=predict_label[0],
+            confidence=float(predict_label[1]) * 100,
             accuracy=float(predict_label[1]),
             fn=fn
         )

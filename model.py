@@ -35,6 +35,7 @@ class Car(BaseModel):
 class Prediction(BaseModel):
     id: ObjectId = Field(None, alias='_id')
     prediction: str = None
+    confidence: float = None
     accuracy: float = None
     fn: str = None
 
