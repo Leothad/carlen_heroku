@@ -60,13 +60,23 @@ paths:
                     properties:
                       data:
                         type: object
-                        properties:
-                          id:
-                            type: string
-                            example: "619af4f7dee6db19206b875f"
-                          _link:
-                            type: string
-                            example: "/predict/619af4f7dee6db19206b875f"
+                        allOf:
+                          - $ref: "#/components/schemas/Prediction"
+                          - type: object
+                            properties:
+                              _link:
+                                type: string
+                                example: "/predict/619af4f7dee6db19206b875f"
+                              prediction_cars:
+                                type: array
+                                items:
+                                  allOf:
+                                    - $ref: "#/components/schemas/Car"
+                                    - type: object
+                                      properties:
+                                        _link:
+                                          type: string
+                                          example: "/cars/61922b912aefc2e792f033de"
         "400":
           description: Invalid request
           content:
