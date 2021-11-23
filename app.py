@@ -101,18 +101,40 @@ def predict():
         except Exception:
             abort(500, description='Failed to save prediction')
 
-        return build_response(True, data={'id': str(result.inserted_id), '_link': url_for('predict_detail', id=ObjectId(str(result.inserted_id)))})
+        try:
+            cars = car.find(
+                {'car': {'$regex': p.prediction.lower()}},
+                {'brand': 1, 'car': 1, 'model': 1, '_id': 1}
+            )
+        except Exception:
+            abort(500, description='Failed to retrieve cars')
+
+        return build_response(
+            True,
+            data={
+                **p.dict(),
+                'id': str(result.inserted_id),
+                'fn': url_for('predict_image', fn=p.fn),
+                'cars': [
+                    {
+                        **Car(**c).dict(),
+                        '_link': url_for('car_detail', id=c.get('_id'))
+                    } for c in cars
+                ],
+                '_link': url_for('predict_detail', id=result.inserted_id)
+            }
+        )
     else:
         abort(400, description='Invalid file type')
 
 
-@app.route('/predict/<ObjectId:id>', methods=['GET'])
+@ app.route('/predict/<ObjectId:id>', methods=['GET'])
 def predict_detail(id):
     p = prediction.find_one_or_404({'_id': id})
     return build_response(True, data={**Prediction(**p).dict(), 'fn': url_for('predict_image', fn=p.get('fn'))})
 
 
-@app.route('/predict/images/<path:fn>')
+@ app.route('/predict/images/<path:fn>')
 def predict_image(fn):
     return pymongo.send_file(fn, base='prediction')
 
@@ -127,10 +149,18 @@ def car_list():
         )
     except Exception:
         abort(500, description='Failed to retrieve cars')
-    return build_response(True, data=[{**Car(**c).dict(), '_link': url_for('car_detail', id=c.get('_id'))} for c in cars])
+    return build_response(
+        True,
+        data=[
+            {
+                **Car(**c).dict(),
+                '_link': url_for('car_detail', id=c.get('_id'))
+            } for c in cars
+        ]
+    )
 
 
-@app.route('/cars/<ObjectId:id>', methods=['GET'])
+@ app.route('/cars/<ObjectId:id>', methods=['GET'])
 def car_detail(id):
     c = car.find_one_or_404({'_id': id})
     return build_response(True, data=Car(**c))
